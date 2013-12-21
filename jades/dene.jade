@@ -1,0 +1,25 @@
+extends layout
+block content
+	div.row-fluid
+	div.well
+		a.btn.button.btn-success.pull-right(href="javascript:$('#haber').modal();") Yeni Ekle
+	div.row-fluid
+		table.table.table-striped
+			th.span5 Başlık
+			th.span3 Konular
+			th.span2 Tarih
+			th.span2 #
+			//modal.hide.fade#haber
+	div 
+		div.modal-body
+			label(for="txt_title") 
+				strong Başlık
+			input#txt_title 
+			label(for="txt_metin") 
+				strong Başlık
+			textarea#txt_metin
+			
+
+		div.modal-footer
+			a.btn(href="javascript:$('#haber').modal('hide');") Vazgeç
+			a.btn.btn-success Kaydet	

@@ -1,3 +1,6 @@
+.DS_Store
+
+
 lib-cov
 *.seed
 *.log
@@ -6,10 +9,12 @@ lib-cov
 *.out
 *.pid
 *.gz
-
+ 
 pids
 logs
 results
-
-npm-debug.log
+data
+ 
 node_modules
+npm-debug.log
+*.sublime-workspace
