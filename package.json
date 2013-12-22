@@ -4,6 +4,7 @@
     "description" : "Usishi BootStrap",
     "dependencies": {
         "express": "3.0.3",  
-        "jade": "0.27.7"
+        "jade": "0.27.7",
+        "mime" : "1.2.11"
     }
 }

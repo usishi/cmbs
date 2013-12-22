@@ -18,8 +18,14 @@ block content
 			label(for="txt_metin") 
 				strong Başlık
 			textarea#txt_metin
+			label(for="txt_image") 
+				strong Haber Resmi
+			input(type="file",title="Dosya Seçiniz")#txt_image
 			
 
 		div.modal-footer
 			a.btn(href="javascript:$('#haber').modal('hide');") Vazgeç
 			a.btn.btn-success Kaydet	
+block scripts
+	script(type="text/javascript")
+		$(document).ready(function(){$('input[type=file]').bootstrapFileInput();});
