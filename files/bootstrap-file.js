@@ -12,7 +12,7 @@
 */
 $(function() {
 
-$.fn.bootstrapFileInput = function() {
+$.fn.bootstrapFileInput = function(options) {
 
   this.each(function(i,elem){
 
@@ -102,8 +102,17 @@ $.fn.bootstrapFileInput = function() {
         // fileName = $(this).val().replace('C:\\fakepath\\','');
         fileName = fileName.substring(fileName.lastIndexOf('\\')+1,fileName.length);
       }
+      //$(this).parent().after('<img class="file-input-name" id="fileimg" />');
+      var reader = new FileReader();
 
-      $(this).parent().after('<span class="file-input-name">'+fileName+'</span>');
+      reader.onload = function (e) {
+        if (options.onSelect!=undefined){
+          options.onSelect(e.target.result);
+        }
+      }
+
+      reader.readAsDataURL(this.files[0]);
+      
     });
 
   });

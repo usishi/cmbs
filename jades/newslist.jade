@@ -2,30 +2,35 @@ extends layout
 block content
 	div.row-fluid
 	div.well
-		a.btn.button.btn-success.pull-right(href="javascript:$('#haber').modal();") Yeni Ekle
+		a.btn.button.btn-success.pull-right(href="javascript:opennew()") Yeni Ekle
 	div.row-fluid
 		table.table.table-striped
 			th.span5 Başlık
 			th.span3 Konular
 			th.span2 Tarih
 			th.span2 #
-			//modal.hide.fade#haber
-	div 
-		div.modal-body
-			label(for="txt_title") 
-				strong Başlık
-			input#txt_title 
-			label(for="txt_metin") 
-				strong Başlık
-			textarea#txt_metin
-			label(for="txt_image") 
-				strong Haber Resmi
-			input(type="file",title="Dosya Seçiniz")#txt_image
 			
-
+	div.modal.hide.fade#haber
+		div.modal-body
+			div.row-fluid
+				div.span6#resimsec
+					
+				div.span6
+					label(for="txt_title") 
+						strong İçerik Başlığı
+					input.span12#txt_title 
+			div.row-fluid(style="margin-top:10px;")		
+				div.span12
+					label(for="txt_metin") 
+						strong İçerik Metni
+					textarea.span12(style="min-height:200px")#txt_metin
+			
 		div.modal-footer
 			a.btn(href="javascript:$('#haber').modal('hide');") Vazgeç
 			a.btn.btn-success Kaydet	
 block scripts
-	script(type="text/javascript")
-		$(document).ready(function(){$('input[type=file]').bootstrapFileInput();});
+	script(src='/adm/files/jq.Jcrop.min.js',type="text/javascript")
+	script(src='/adm/files/imageload.js',type="text/javascript")
+		
+block styles
+	link(rel='stylesheet', href='/adm/files/jq.Jcrop.min.css')
