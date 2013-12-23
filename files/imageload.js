@@ -1,4 +1,5 @@
 var japi;
+var sa={};
 
 function setjapi(){
 
@@ -14,37 +15,42 @@ function setjapi(){
 
 				var wc,hc;
 				if ((w/4)>(h/3)) {
-					console.log("YATAY");
 					hc=h;
 					wc=(hc*4)/3;
 					x=Math.round((w-wc)/2);
 					y=0;
 				} else {
-					console.log("DİKEY");
 					wc=w;
 					hc=(wc*3)/4;
 					x=0;
 					y=Math.round((h-hc)/2);
 				}
-				japi = $.Jcrop('#loaded');
-				scalefactor=w/japi.getBounds()[0];
-				console.log(scalefactor);
-				x2=Math.round(x/scalefactor);
-				y2=Math.round(y/scalefactor);
-				w2=Math.round(wc/scalefactor);
-				h2=Math.round(hc/scalefactor);
-				console.log(japi.getBounds());
-				console.log(x2+'--'+y2+'--'+w2+'--'+h2);
-				japi.setSelect([x2,y2,w2,h2]);
-				japi.setOptions({ allowSelect: false,allowResize:false });
 
+				$('#loaded').Jcrop({
+					onChange: showPreview,
+					onSelect: showPreview,
+				},function(){
+					japi=this;
+					scalefactor=w/japi.getBounds()[0];
+					x2=Math.round(x/scalefactor);
+					y2=Math.round(y/scalefactor);
+					w2=Math.round(wc/scalefactor);
+					h2=Math.round(hc/scalefactor);
+					sa.w=wc;
+					sa.h=hc;
+					sa.sf=scalefactor;
+					japi.setSelect([x2,y2,w2+x2,h2+y2]);
+					japi.setOptions({ allowSelect: false,allowResize:false });
+				});
 			}
 		}
 	);
 	
   function showPreview(coords)
   {
-
+  	console.log(coords);
+  	sa.x=coords.x*sa.sf;
+  	sa.y=coords.y*sa.sf;
   }
 };
 
@@ -54,4 +60,11 @@ function opennew(){
 	$('#resimsec').html('');
 	$('#resimsec').append('<label for="txt_image"> <strong>İçerik Resmi</strong></label><input type="file" title="Dosya Seçiniz" id="txt_image"><img id="loaded" style="max-width:150px;max-height:150px">');
 	setjapi();
+}
+
+
+function save(){
+	postData('/adm/ajax',{job:'save',title:getOValue('txt_title'),metin:getOValue('txt_metin'),img:$('#loaded').attr('src'),area:JSON.stringify(sa)},function(retVal){
+		console.log(retVal);
+	});
 }

@@ -3,8 +3,9 @@
     "version": "0.0.1", 
     "description" : "Usishi BootStrap",
     "dependencies": {
-        "express": "3.0.3",  
+        "express": "3.4.7",  
         "jade": "0.27.7",
-        "mime" : "1.2.11"
+        "mime" : "1.2.11",
+        "node-uuid": "1.4.1"
     }
 }

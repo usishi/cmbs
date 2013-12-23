@@ -1,5 +1,7 @@
 var jade = require('jade'),
 	mime = require('mime'),
+	uuid = require('node-uuid'),
+	spawn = require('child_process').spawn,
 	fs = require('fs');
 
 module.exports = function(ubsoptions) {
@@ -29,6 +31,20 @@ module.exports = function(ubsoptions) {
 						res.end(html);
 						console.log("ok");
 					});
+	  		break;
+	  		case '/ajax' : 
+	  			switch(req.body.job){
+	  				case 'save' : 
+	  					fname=__dirname+'/db/'+uuid.v4();
+	  					fs.writeFileSync(fname+'.b64',req.body.img);
+	  					var crop=JSON.parse(req.body.area);
+	  					var resize=spawn('convert',['inline:'+fname+'.b64','-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,fname+'.png'],{cwd:'db'});
+      				resize.on('exit',function(estat){
+      					fs.unlink(fname+'.b64');
+      					//burdan dvm
+      				});
+	  				break;
+	  			}
 	  		break;
 	  		default : next(); break;
 	  	}
