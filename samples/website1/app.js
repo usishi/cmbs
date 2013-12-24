@@ -13,8 +13,8 @@ app.configure(function() {
   //app.use('/static',gzip.staticGzip(__dirname + '/static', { matchType: /js/ }));
   app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
-  app.use(express.bodyParser());   
-  app.use('/adm',ubs({bsjs:'/static/js/bootstrap.min.js',bscss:'/static/css/bootstrap.min.css',jqjs:'/static/js/jquery-1.9.1.js'}));
+  app.use(express.bodyParser({limit:'50mb'})); 
+  app.use('/adm',ubs({categories:['Haberler','Sivastan','Denemeler','Teknoloji','Buluttan Haberler'],bsjs:'/static/js/bootstrap.min.js',bscss:'/static/css/bootstrap.min.css',jqjs:'/static/js/jquery-1.9.1.js'}));
 	app.use(express.cookieParser('Usishi.WebSite.2012'));
 	app.use(express.session({cookie:{ maxAge:60000}}));
   app.use(express.favicon(__dirname + '/static/favicon.ico', { maxAge: 2592000000 }));
