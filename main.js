@@ -51,13 +51,23 @@ module.exports = function(ubsoptions) {
 	  			switch(req.body.job){
 	  				case 'save' : 
 	  					fname=__dirname+'/db/'+uuid.v4();
-	  					fs.writeFileSync(fname+'.b64',req.body.img);
+	  					
+	  					var pos=req.body.img.indexOf(';');
+
+	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+
+	  					var imgtype=req.body.img.substring(11,pos);
+
+	  					fs.writeFileSync(fname+'.'+imgtype,buf);
+
+	  					console.log("dosya yazıldı "+fname+'.'+imgtype);
+
 	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',['inline:'+fname+'.b64','-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,fname+'.png'],{cwd:'db'});
+	  					var resize=spawn('convert',[fname+'.'+imgtype,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,fname+'.jpg'],{cwd:'db'});
       				resize.on('exit',function(estat){
       					sendReturn(res,estat);
       					if (estat==0){
-      						fs.unlink(fname+'.b64');
+      						fs.unlink(fname+'.'+imgtype);
 	      					var content={};
 	      					content.title=req.body.title;
 	      					content.body=req.body.metin;
@@ -89,7 +99,7 @@ module.exports = function(ubsoptions) {
 	  				break;
 	  				case 'delete':
 	  					db.findOne({_id:req.body.id},function(e,doc){
-	  						var file = __dirname+'/db/'+doc.img+'.png';		
+	  						var file = __dirname+'/db/'+doc.img+'.jpg';		
 	  						fs.unlink(file);
 	  						db.remove({_id:req.body.id},function(e2,n){
 	  							sendReturn(res,'ok');
@@ -100,10 +110,10 @@ module.exports = function(ubsoptions) {
 	  		break;
 	  		default : 
 	  		  if(req.url.indexOf('/content/getimage/')>-1){
-	  		  	var file = req.url.replace('/content/getimage/',__dirname+'/db/')+'.png';
+	  		  	var file = req.url.replace('/content/getimage/',__dirname+'/db/')+'.jpg';
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
-                res.contentType = 'image/png';
+                res.contentType = 'image/jpeg';
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
