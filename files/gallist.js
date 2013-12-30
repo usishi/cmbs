@@ -15,14 +15,14 @@ function setjapi(twidth,theight){
 				var h = $('#loaded').context.images[0].naturalHeight;
 
 				var wc,hc;
-				if ((w/4)>(h/3)) {
+				if ((w/twidth)>(h/theight)) {
 					hc=h;
-					wc=(hc*4)/3;
+					wc=(hc*twidth)/theight;
 					x=Math.round((w-wc)/2);
 					y=0;
 				} else {
 					wc=w;
-					hc=(wc*3)/4;
+					hc=(wc*theight)/twidth;
 					x=0;
 					y=Math.round((h-hc)/2);
 				}
@@ -57,11 +57,7 @@ function setjapi(twidth,theight){
 
 function opennew(tw,th){
 	$('#haber').modal();
-	$('#kategoricontainer input:checked').each(function(i,cb){
-		$(cb).removeAttr('checked');
-	})
 	$('#txt_title').val('');
-	$('#txt_metin').val('');
 	$('#resimsec').html('');
 	$('#resimsec').append('<label for="txt_image"> <strong>İçerik Resmi</strong></label><input type="file" title="Dosya Seçiniz" id="txt_image"><img id="loaded" style="max-width:150px;max-height:150px">');
 	setjapi(tw,th);
@@ -70,11 +66,9 @@ function opennew(tw,th){
 
 function save(){
 	var cats=[];
-	$('#kategoricontainer input:checked').each(function(i,cb){
-		cats.push(cb.value);
-	})
-	if ((getOValue('txt_title').trim()!='') && (getOValue('txt_metin').trim()!='') && (cats.length>0)) {
-		postData('/adm/ajax',{job:'save',title:getOValue('txt_title'),metin:getOValue('txt_metin'),img:$('#loaded').attr('src'),area:JSON.stringify(sa),turler:JSON.stringify(cats)},function(retVal){
+	cats.push(getOValue('lst_kategori'));
+	if ((getOValue('txt_title').trim()!='')) {
+		postData('/adm/ajax',{job:'savegal',title:getOValue('txt_title'),img:$('#loaded').attr('src'),area:JSON.stringify(sa),turler:JSON.stringify(cats)},function(retVal){
 			$('#haber').modal('hide');
 			list();
 		});
@@ -84,7 +78,7 @@ function save(){
 }
 
 function list(){
-	postData('/adm/ajax',{job:'list',cat:getOValue('lst_kategori')},function(retVal){
+	postData('/adm/ajax',{job:'listgal',cat:getOValue('lst_kategori')},function(retVal){
 		$('#tbl').html('');
 		retVal.forEach(function(itm){
 			if (itm.enabled){
@@ -102,23 +96,17 @@ function news_ed(id){
 }
 
 function news_edit(id){
-	postData('/adm/content',{job:'get',id:id},function(retVal){
+	postData('/adm/content',{job:'getgal',id:id},function(retVal){
 		console.log(retVal);
 		$('#haber').modal();
 		$('#txt_title').val(retVal.title);
-		$('#txt_metin').val(retVal.body);
-		$('#kategoricontainer input').each(function(i,cb){
-			if (retVal.categories.indexOf(cb.value)>-1){
-				$(cb).attr('checked','');
-			}
-		});
-		$('#resimsec').html('<img src="/adm/content/getimage/'+retVal.img+'">');
+		$('#resimsec').html('<img src="/adm/gallery/getimage/'+retVal.img+'">');
 	});
 }
 
 
 function news_delete(id){
-	postData('/adm/content',{job:'delete',id:id},function(retVal){
+	postData('/adm/content',{job:'deletegal',id:id},function(retVal){
 		list();
 	});
 }
