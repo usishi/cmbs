@@ -112,7 +112,7 @@ function news_edit(id){
 				$(cb).attr('checked','');
 			}
 		});
-		$('#resimsec').html('<img src="/adm/content/getimage/'+retVal.img+'">');
+		$('#resimsec').html('<img src="/adm/content/getimg/'+retVal.imgtype+'/'+retVal.img+'">');
 	});
 }
 
