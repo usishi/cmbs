@@ -1,0 +1,38 @@
+extends layout
+block styles
+	link(rel='stylesheet', href='/adm/files/jq.Jcrop.min.css')
+block content
+	div.row-fluid
+		div.well
+			label(for="lst_kategori") 
+				strong Galeri İsmi
+			select#lst_kategori
+				- options.galleries.forEach(function(itm){
+					option #{itm}
+				- })	
+			a.btn.button.btn-primary(href="javascript:list()",style="margin-bottom:10px;") Listele
+			a.btn.button.btn-success.pull-right(href="javascript:opennew("+options.thumbsizes.gallery.w+","+options.thumbsizes.gallery.h+")") Yeni Resim
+		div.row-fluid
+			table.table.table-striped
+				th.span5 Resim
+				th.span3 Başlık
+				th.span3 Yüklenme Zamanı
+				th.span2 #
+				tbody#tbl
+			
+	div.modal.hide.fade#haber
+		div.modal-body
+			div.row-fluid(style="min-height:150px;")
+				div.span5#resimsec
+					
+				div.span7
+					label(for="txt_title") 
+						strong Resim Başlığı
+					input.span12#txt_title 
+					
+		div.modal-footer
+			a.btn(href="javascript:$('#haber').modal('hide');") Vazgeç
+			a.btn.btn-success(href="javascript:save()") Kaydet	
+block scripts
+	script(src='/adm/files/jq.Jcrop.min.js',type="text/javascript")
+	script(src='/adm/files/gallist.js',type="text/javascript")
