@@ -40,8 +40,12 @@ module.exports = function(options) {
   return function(req, res, next) {
   	if (req.url.indexOf('/files')>-1){ //static files
   		var fname=__dirname+'/files/'+req.url.replace('/files/','');
-  		res.setHeader('Content-Type', mime.lookup(fname));
-  		res.end(fs.readFileSync(fname, 'utf8'));
+  		fs.stat(fname, function (err, stat) {
+        var file = fs.readFileSync(fname);
+        res.contentType =  mime.lookup(fname);
+        res.contentLength = stat.size;
+        res.end(file, 'binary');
+      });
   	} else {
   		switch (req.url){
 	  		case '/newslist' :
