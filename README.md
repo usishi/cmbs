@@ -5,7 +5,15 @@ Content Management Bootstrap
 You can easily manage your website's contents and galleries
 
 
-Usage
+Install
+```bash
+npm install cmbs
+```
+
+Usage : 
+
+in your main "js" 
+
 ```javascript
 	app.use('/adm',ubs({
 		categories:['News','Technology','Cars'],

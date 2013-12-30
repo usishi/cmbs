@@ -1,7 +1,12 @@
 { 
-    "name": "ubs", 
+    "name": "cmbs", 
     "version": "0.0.1", 
-    "description" : "Usishi BootStrap",
+    "description" : "Content Management BootStrap",
+    "author": "USISHI ICT <info@usishi.com>",
+        "maintainers": [
+            "Fatih Soydan <fatihsoydan@fatihsoydan.com>"
+    ],
+    "readmeFilename": "README.md",
     "dependencies": {
         "express": "3.4.7",  
         "jade": "0.27.7",

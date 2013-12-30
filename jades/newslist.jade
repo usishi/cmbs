@@ -5,11 +5,11 @@ block content
 		label(for="lst_kategori") 
 			strong İçerik Türü
 		select#lst_kategori
-			- ubsoptions.categories.forEach(function(itm){
+			- options.categories.forEach(function(itm){
 				option #{itm}
 			- })	
 		a.btn.button.btn-primary(href="javascript:list()",style="margin-bottom:10px;") Listele
-		a.btn.button.btn-success.pull-right(href="javascript:opennew("+ubsoptions.thumbsizes.content.w+","+ubsoptions.thumbsizes.content.h+")") Yeni Ekle
+		a.btn.button.btn-success.pull-right(href="javascript:opennew("+options.thumbsizes.content.w+","+options.thumbsizes.content.h+")") Yeni Ekle
 	div.row-fluid
 		table.table.table-striped
 			th.span5 Başlık
@@ -30,7 +30,7 @@ block content
 					label 
 						strong İçerik Türleri :
 					div#kategoricontainer		
-						- ubsoptions.categories.forEach(function(itm){
+						- options.categories.forEach(function(itm){
 							label(style="float:left;margin-right:5px;")
 								input(type="checkbox",style="margin-top:0px;",value=itm) 
 								span.lbl(style="margin-left:2px;") #{itm}

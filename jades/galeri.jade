@@ -7,11 +7,11 @@ block content
 			label(for="lst_kategori") 
 				strong Galeri İsmi
 			select#lst_kategori
-				- ubsoptions.galleries.forEach(function(itm){
+				- options.galleries.forEach(function(itm){
 					option #{itm}
 				- })	
 			a.btn.button.btn-primary(href="javascript:list()",style="margin-bottom:10px;") Listele
-			a.btn.button.btn-success.pull-right(href="javascript:opennew("+ubsoptions.thumbsizes.gallery.w+","+ubsoptions.thumbsizes.gallery.h+")") Yeni Resim
+			a.btn.button.btn-success.pull-right(href="javascript:opennew("+options.thumbsizes.gallery.w+","+options.thumbsizes.gallery.h+")") Yeni Resim
 		div.row-fluid
 			table.table.table-striped
 				th.span5 Resim
