@@ -69,7 +69,7 @@ module.exports = function(options) {
 	  					var tname= options.datafolder+'/content/t_'+imgid+'.jpg';
 	  					fs.writeFileSync(fname,buf);
 	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.content.w+'x'+options.content.h,tname],{cwd:options.datafolder+'/content'});
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.thumbsizes.content.w+'x'+options.thumbsizes.content.h,tname],{cwd:options.datafolder+'/content'});
       				resize.on('exit',function(estat){
       					console.log(estat);
       					sendReturn(res,estat);
@@ -96,7 +96,7 @@ module.exports = function(options) {
 	  					var tname= options.datafolder+'/gallery/t_'+imgid+'.jpg';
 	  					fs.writeFileSync(fname,buf);
 	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.gallery.w+'x'+options.gallery.h,tname],{cwd:options.datafolder+'/gallery'});
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.thumbsizes.gallery.w+'x'+options.thumbsizes.gallery.h,tname],{cwd:options.datafolder+'/gallery'});
       				resize.on('exit',function(estat){
       					console.log(estat);
       					sendReturn(res,estat);
