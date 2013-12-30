@@ -1,6 +1,6 @@
 { 
     "name": "cmbs", 
-    "version": "0.0.1", 
+    "version": "0.0.2", 
     "description" : "Content Management BootStrap",
     "author": "USISHI ICT <info@usishi.com>",
         "maintainers": [

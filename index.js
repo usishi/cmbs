@@ -30,21 +30,10 @@ module.exports = function(options) {
 			fs.mkdir(options.datafolder+'/gallery',function(e3){});		
 		});
 	});
-	
-	
-	
+		
 	var db = new Datastore({ filename: options.datafolder+'/ubs.nedb', autoload: true });
 	var dbgal = new Datastore({ filename: options.datafolder+'/gal.nedb', autoload: true });
 
-	if (options.bsjs==undefined){
-		options.bsjs='/static/js/bootstrap.js';
-	}
-	if (options.jqjs==undefined){
-		options.jqjs='/static/js/jquery.js';
-	}
-	if (options.bscss==undefined){
-		options.bscss='/static/css/bootstrap.min.css';
-	}
   if (options.thumbsizes==undefined){
   	options.thumbsizes={content:{w:120,h:90},gallery:{w:100,h:100}};
   }
