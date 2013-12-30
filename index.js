@@ -51,7 +51,7 @@ module.exports = function(options) {
 					});
 	  		break;
 	  		case '/gallist' :
-	  			jade.renderFile(__dirname+'/jades/galeri.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
+	  			jade.renderFile(__dirname+'/jades/gallery.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
 						res.end(html);
 						console.log("ok");
 					});
@@ -90,11 +90,11 @@ module.exports = function(options) {
 	  					var pos=req.body.img.indexOf(';');
 	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
 	  					var imgtype=req.body.img.substring(11,pos);
-	  					var fname=options.datafolder+'/galeri/'+imgid+'.'+imgtype;
-	  					var tname= options.datafolder+'/galeri/t_'+imgid+'.'+imgtype;
+	  					var fname=options.datafolder+'/gallery/'+imgid+'.'+imgtype;
+	  					var tname= options.datafolder+'/gallery/t_'+imgid+'.'+imgtype;
 	  					fs.writeFileSync(fname,buf);
 	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,tname],{cwd:options.datafolder+'/galeri'});
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,tname],{cwd:options.datafolder+'/gallery'});
       				resize.on('exit',function(estat){
       					console.log(estat);
       					sendReturn(res,estat);
@@ -150,8 +150,8 @@ module.exports = function(options) {
 	  				break;
 	  				case 'deletegal':
 	  					dbgal.findOne({_id:req.body.id},function(e,doc){
-	  						fs.unlink(options.datafolder+'/galeri/'+doc.img+'.'+doc.imgtype);
-	  						fs.unlink(options.datafolder+'/galeri/t_'+doc.img+'.jpg');
+	  						fs.unlink(options.datafolder+'/gallery/'+doc.img+'.'+doc.imgtype);
+	  						fs.unlink(options.datafolder+'/gallery/t_'+doc.img+'.jpg');
 	  						dbgal.remove({_id:req.body.id},function(e2,n){
 	  							sendReturn(res,'ok');
 	  						});
@@ -169,7 +169,7 @@ module.exports = function(options) {
                 res.end(img, 'binary');
             });
 	  		  } if(req.url.indexOf('/gallery/getthumb/')>-1){
-	  		  	var file = req.url.replace('/gallery/getimage/',options.datafolder+'/galeri/t_')+'.jpg';
+	  		  	var file = req.url.replace('/gallery/getimage/',options.datafolder+'/gallery/t_')+'.jpg';
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
                 res.contentType = 'image/jpeg';
@@ -179,7 +179,7 @@ module.exports = function(options) {
 	  		  } 
 	  		  if(req.url.indexOf('/gallery/getimg/')>-1){
 	  		  	var icerik=req.url.replace('/gallery/getimg/','').split('/');
-	  		  	var file = options.datafolder+'/galeri/'+icerik[1]+'.'+icerik[0];
+	  		  	var file = options.datafolder+'/gallery/'+icerik[1]+'.'+icerik[0];
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
                 res.contentType = 'image/jpeg';
