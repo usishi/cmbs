@@ -51,13 +51,11 @@ module.exports = function(options) {
 	  		case '/newslist' :
 	  			jade.renderFile(__dirname+'/jades/newslist.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
 						res.end(html);
-						console.log("ok");
 					});
 	  		break;
 	  		case '/gallist' :
 	  			jade.renderFile(__dirname+'/jades/gallery.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
 						res.end(html);
-						console.log("ok");
 					});
 	  		break;
 	  		case '/ajax' : 
@@ -68,10 +66,10 @@ module.exports = function(options) {
 	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
 	  					var imgtype=req.body.img.substring(11,pos);
 	  					var fname=options.datafolder+'/content/'+imgid+'.'+imgtype;
-	  					var tname= options.datafolder+'/content/t_'+imgid+'.'+imgtype;
+	  					var tname= options.datafolder+'/content/t_'+imgid+'.jpg';
 	  					fs.writeFileSync(fname,buf);
 	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,tname],{cwd:options.datafolder+'/content'});
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.content.w+'x'+options.content.h,tname],{cwd:options.datafolder+'/content'});
       				resize.on('exit',function(estat){
       					console.log(estat);
       					sendReturn(res,estat);
@@ -95,10 +93,10 @@ module.exports = function(options) {
 	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
 	  					var imgtype=req.body.img.substring(11,pos);
 	  					var fname=options.datafolder+'/gallery/'+imgid+'.'+imgtype;
-	  					var tname= options.datafolder+'/gallery/t_'+imgid+'.'+imgtype;
+	  					var tname= options.datafolder+'/gallery/t_'+imgid+'.jpg';
 	  					fs.writeFileSync(fname,buf);
 	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,tname],{cwd:options.datafolder+'/gallery'});
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.gallery.w+'x'+options.gallery.h,tname],{cwd:options.datafolder+'/gallery'});
       				resize.on('exit',function(estat){
       					console.log(estat);
       					sendReturn(res,estat);
@@ -163,39 +161,39 @@ module.exports = function(options) {
 	  				break;
 	  			}
 	  		break;
-	  		default : 
+	  		default :
+	  			console.log(req.url); 
 	  		  if(req.url.indexOf('/content/getthumb/')>-1){
-	  		  	var file = req.url.replace('/content/getimage/',options.datafolder+'/content/t_')+'.jpg';
+	  		  	var file = req.url.replace('/content/getthumb/',options.datafolder+'/content/t_')+'.jpg';
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
                 res.contentType = 'image/jpeg';
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
-	  		  } if(req.url.indexOf('/gallery/getthumb/')>-1){
-	  		  	var file = req.url.replace('/gallery/getimage/',options.datafolder+'/gallery/t_')+'.jpg';
+	  		  } else if(req.url.indexOf('/gallery/getthumb/')>-1){
+	  		  	var file = req.url.replace('/gallery/getthumb/',options.datafolder+'/gallery/t_')+'.jpg';
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
                 res.contentType = 'image/jpeg';
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
-	  		  } 
-	  		  if(req.url.indexOf('/gallery/getimg/')>-1){
+	  		  }  else if(req.url.indexOf('/gallery/getimg/')>-1){
 	  		  	var icerik=req.url.replace('/gallery/getimg/','').split('/');
 	  		  	var file = options.datafolder+'/gallery/'+icerik[1]+'.'+icerik[0];
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
-                res.contentType = 'image/jpeg';
+                res.contentType = mime.lookup(file);
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
-	  		  } if(req.url.indexOf('/content/getimg/')>-1){
+	  		  } else if(req.url.indexOf('/content/getimg/')>-1){
 	  		  	var icerik=req.url.replace('/content/getimg/','').split('/');
 	  		  	var file = options.datafolder+'/content/'+icerik[1]+'.'+icerik[0];
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
-                res.contentType = 'image/jpeg';
+                res.contentType = mime.lookup(file);
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
