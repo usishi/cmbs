@@ -122,3 +122,5 @@ function news_delete(id){
 		list();
 	});
 }
+
+list();
