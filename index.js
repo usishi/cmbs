@@ -50,12 +50,30 @@ module.exports = function(options) {
   		switch (req.url){
 	  		case '/newslist' :
 	  			jade.renderFile(__dirname+'/jades/newslist.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
-						res.end(html);
+	  				if ((options.categories==undefined) || (options.categories.length<1)){
+	  					res.end('content categories not defined');
+	  				} else {
+	  					res.end(html);	
+	  				}
+						
 					});
 	  		break;
 	  		case '/gallist' :
 	  			jade.renderFile(__dirname+'/jades/gallery.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
-						res.end(html);
+	  				if ((options.galleries==undefined) || (options.galleries.length<1)){
+	  					res.end('gallery list not defined');
+	  				} else {
+	  					res.end(html);	
+	  				}
+					});
+	  		break;
+	  		case '/rclist' :
+	  			jade.renderFile(__dirname+'/jades/richcontent.jade',{options:options,pjson:{name:"projeismi"}},function (err, html) {
+	  				if ((options.richcontents==undefined) || (options.richcontents.length<1)){
+	  					res.end('richcontents not defined');
+	  				} else {
+	  					res.end(html);	
+	  				}
 					});
 	  		break;
 	  		case '/ajax' : 
