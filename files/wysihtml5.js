@@ -7379,7 +7379,7 @@ wysihtml5.Commands = Base.extend(
      */
     exec: function(composer, command, value) {
       value = typeof(value) === "object" ? value : { src: value };
-
+      
       var doc     = composer.doc,
           image   = this.state(composer),
           textNode,
@@ -7405,6 +7405,7 @@ wysihtml5.Commands = Base.extend(
       }
 
       image = doc.createElement(NODE_NAME);
+      console.log("gömülen:"+image);
 
       for (i in value) {
         image[i] = value[i];
@@ -9433,9 +9434,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
         }
       });
       
-      try {
-        console.log("Heya! This page is using wysihtml5 for rich text editing. Check out https://github.com/xing/wysihtml5");
-      } catch(e) {}
     },
     
     isCompatible: function() {

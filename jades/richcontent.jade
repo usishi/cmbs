@@ -11,63 +11,34 @@ block content
 				- options.richcontents.forEach(function(itm){
 					option #{itm}
 				- })	
-			a.btn.button.btn-primary(href="javascript:load()",style="margin-bottom:10px;") Yükle
+			a.btn.button.btn-primary(href="javascript:loadrc()",style="margin-bottom:10px;") Yükle
 			
 		div.row-fluid
-			.span7.well
+			.span9.well
 				.row-fluid
-					.span6
+					.span4
 						label
 							strong Başlık 1
-						input(type="text")
-					.span6		
+						input(type="text")#txt_title1
+					.span4		
 						label
 							strong Başlık 2
-						input(type="text")	
+						input(type="text")#txt_title2
+					.span4
+						label
+							strong Küçük Resim Seç
+						select#medianamelist2
 				.row-fluid
-					#wysihtml5-editor-toolbar
-						header
-							ul.commands
-								li.command(data-wysihtml5-command='bold', title='Make text bold (CTRL + B)') 
-								li.command(data-wysihtml5-command='italic', title='Make text italic (CTRL + I)')
-								li.command(data-wysihtml5-command-group='foreColor',title='Color the selected text').fore-color.wysihtml5-command-active
-									ul
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='silver')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='gray')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='maroon')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='red')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='purple')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='green')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='olive')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='navy')
-										li(data-wysihtml5-command='foreColor', data-wysihtml5-command-value='blue')
-								li.command(data-wysihtml5-command='insertUnorderedList', title='Insert an unordered list')
-								li.command(data-wysihtml5-command='insertOrderedList', title='Insert an ordered list')
-								li.command(data-wysihtml5-command='createLink', title='Insert a link')
-								li.command(data-wysihtml5-command='insertImage', title='Insert an image')
-								li.command(data-wysihtml5-command='formatBlock', data-wysihtml5-command-value='h1', title='Insert headline 1')
-								li.command(data-wysihtml5-command='formatBlock', data-wysihtml5-command-value='h2', title='Insert headline 2')
-								li.action(data-wysihtml5-action='change_view', title='Show HTML')
-						div(data-wysihtml5-dialog='createLink', style='display: none;')
-							label
-								| Link:
-								input(data-wysihtml5-dialog-field='href', value='http://')
-							a(data-wysihtml5-dialog-action='save') OK
-							a(data-wysihtml5-dialog-action='cancel') Cancel
-						div(data-wysihtml5-dialog='insertImage', style='display: none;')
-							label
-								| Image:
-								input(data-wysihtml5-dialog-field='src', value='http://')
-							a(data-wysihtml5-dialog-action='save') OK
-							a(data-wysihtml5-dialog-action='cancel') Cancel
+					textarea#txt_metin.span12(style="height:400px;")
 
-						textarea#txt_metin
+				.row-fluid
+					a.btn.button.btn-primary(href="javascript:saverc();") KAYDET
+			.span3.well
+				.row-fluid
+					strong İçerik Resimleri
+					a.btn.button.btn-success.pull-right(href="javascript:opennew("+options.thumbsizes.content.w+","+options.thumbsizes.content.h+")") Yeni Resim	
+				.row-fluid#medialist(style="margin-top:10px")
 
-
-			.span5.well
-				strong İçerik Resimleri
-				a.btn.button.btn-success.pull-right(href="javascript:opennew("+options.thumbsizes.gallery.w+","+options.thumbsizes.gallery.h+")") Yeni Resim	
-			
 			
 	div.modal.hide.fade#haber
 		div.modal-body
@@ -76,14 +47,24 @@ block content
 					
 				div.span7
 					label(for="txt_title") 
-						strong Resim Başlığı
+						strong Resim İsmi
 					input.span12#txt_title 
 					
 		div.modal-footer
 			a.btn(href="javascript:$('#haber').modal('hide');") Vazgeç
-			a.btn.btn-success(href="javascript:save()") Kaydet	
+			a.btn.btn-success(href="javascript:savemedia()") Kaydet	
+
+	div.modal.hide.fade#selectImage
+		div.modal-header
+			| İçerik Resmi Seçiniz
+		div.modal-body
+			select#medianamelist
+				
+		div.modal-footer
+			a.btn(href="javascript:$('#selectImage').modal('hide');") Vazgeç
+			a.btn.btn-primary Kaydet			
 block scripts
 	script(src='/adm/files/jq.Jcrop.min.js',type="text/javascript")
-	script(src='/adm/files/wysihtml5_rules.js',type="text/javascript")
 	script(src='/adm/files/wysihtml5.js',type="text/javascript")
+	script(src='/adm/files/wysihtml5_bs.js',type="text/javascript")
 	script(src='/adm/files/rclist.js',type="text/javascript")

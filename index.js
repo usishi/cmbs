@@ -22,17 +22,24 @@ var sendReturn = function(res,returnVal) {
 module.exports = function(options) {
 
 	if (options.datafolder==undefined){
-		options.datafolder=__dirname+'/db';
+		options.datafolder=__dirname+'/data';
 	}
 
 	fs.mkdir(options.datafolder,function(e1){
 		fs.mkdir(options.datafolder+'/content',function(e2){
-			fs.mkdir(options.datafolder+'/gallery',function(e3){});		
+			fs.mkdir(options.datafolder+'/gallery',function(e3){
+				fs.mkdir(options.datafolder+'/richmedia',function(e4){
+
+				});
+			});		
 		});
 	});
 		
 	var db = new Datastore({ filename: options.datafolder+'/ubs.nedb', autoload: true });
 	var dbgal = new Datastore({ filename: options.datafolder+'/gal.nedb', autoload: true });
+	var dbmedia = new Datastore({ filename: options.datafolder+'/media.nedb', autoload: true });
+	var dbrc = new Datastore({ filename: options.datafolder+'/pages.nedb', autoload: true });
+	dbrc.persistence.setAutocompactionInterval(3);
 
   if (options.thumbsizes==undefined){
   	options.thumbsizes={content:{w:120,h:90},gallery:{w:100,h:100}};
@@ -132,17 +139,68 @@ module.exports = function(options) {
       					}
       				});
 	  				break;
+	  				case 'savemedia' : 
+	  					var imgid=uuid.v4();
+	  					var pos=req.body.img.indexOf(';');
+	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+	  					var imgtype=req.body.img.substring(11,pos);
+	  					var fname=options.datafolder+'/richmedia/'+imgid+'.'+imgtype;
+	  					var tname= options.datafolder+'/richmedia/t_'+imgid+'.jpg';
+	  					fs.writeFileSync(fname,buf);
+	  					var crop=JSON.parse(req.body.area);
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.thumbsizes.content.w+'x'+options.thumbsizes.content.h,tname],{cwd:options.datafolder+'/richmedia'});
+      				resize.on('exit',function(estat){
+      					console.log(estat);
+      					sendReturn(res,estat);
+      					if (estat==0){
+	      					var content={};
+	      					content.title=req.body.title;
+	      					content.img=imgid;
+	      					content.imgtype=imgtype;
+	      					content.tarih=new Date();
+	      					dbmedia.insert(content,function(e,d){
+	      						console.log(e);
+	      					});
+      					}
+      				});
+	  				break;
+	  				case 'saverc' : 
+	  					console.log(req.body);
+	  					var content={};
+	  					content.name=req.body.name;
+    					content.title1=req.body.title1;
+    					content.title2=req.body.title2;
+    					content.image=req.body.img;
+    					content.html=req.body.html;
+    					content.tarih=new Date();
+    					dbrc.find({name:req.body.name},function(e,d){
+    						console.log(d);
+    					});
+
+    					dbrc.update({name:req.body.name},content,{upsert:true},function(e,d){
+    						console.log(e);
+    					});
+	  				break;
 	  				case 'list' : 
 	  					db.find({categories:req.body.cat},function(e,docs){
 	  						sendReturn(res,docs);
 	  					})
 	  				break;
-
-	  				case 'listgal' : {
+	  				case 'listgal' : 
 	  					dbgal.find({categories:req.body.cat},function(e,docs){
 	  						sendReturn(res,docs);
 	  					})
-	  				}
+	  				break;
+	  				case 'listmedia' : 
+	  					dbmedia.find({},function(e,docs){
+	  						sendReturn(res,docs);
+	  					})
+	  				break;
+	  				case 'getrc':
+	  					dbrc.findOne({name:req.body.name},function(e,doc){
+	  						sendReturn(res,doc);
+	  					});
+	  				break;
 	  			}
 	  		break;
 	  		case '/content' : 
@@ -180,7 +238,6 @@ module.exports = function(options) {
 	  			}
 	  		break;
 	  		default :
-	  			console.log(req.url); 
 	  		  if(req.url.indexOf('/content/getthumb/')>-1){
 	  		  	var file = req.url.replace('/content/getthumb/',options.datafolder+'/content/t_')+'.jpg';
             fs.stat(file, function (err, stat) {
@@ -191,6 +248,14 @@ module.exports = function(options) {
             });
 	  		  } else if(req.url.indexOf('/gallery/getthumb/')>-1){
 	  		  	var file = req.url.replace('/gallery/getthumb/',options.datafolder+'/gallery/t_')+'.jpg';
+            fs.stat(file, function (err, stat) {
+                var img = fs.readFileSync(file);
+                res.contentType = 'image/jpeg';
+                res.contentLength = stat.size;
+                res.end(img, 'binary');
+            });
+	  		  }  else if(req.url.indexOf('/media/getthumb/')>-1){
+	  		  	var file = req.url.replace('/media/getthumb/',options.datafolder+'/richmedia/t_')+'.jpg';
             fs.stat(file, function (err, stat) {
                 var img = fs.readFileSync(file);
                 res.contentType = 'image/jpeg';
@@ -215,7 +280,17 @@ module.exports = function(options) {
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
+	  		  } else if(req.url.indexOf('/media/getimg/')>-1){
+	  		  	var icerik=req.url.replace('/media/getimg/','').split('/');
+	  		  	var file = options.datafolder+'/richmedia/'+icerik[1]+'.'+icerik[0];
+            fs.stat(file, function (err, stat) {
+                var img = fs.readFileSync(file);
+                res.contentType = mime.lookup(file);
+                res.contentLength = stat.size;
+                res.end(img, 'binary');
+            });
 	  		  } else {
+	  		  	console.log(req.url); 
 	  		  	next(); 	
 	  		  } 
 	  		break;
