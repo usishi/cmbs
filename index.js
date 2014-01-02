@@ -107,7 +107,7 @@ module.exports = function(options) {
 	      					content.tarih=new Date();
 	      					content.enabled=false;
 	      					db.insert(content,function(e,d){
-	      						console.log(e);
+	      						res.end('ok');
 	      					});
       					}
       				});
@@ -134,7 +134,7 @@ module.exports = function(options) {
 	      					content.tarih=new Date();
 	      					content.enabled=false;
 	      					dbgal.insert(content,function(e,d){
-	      						console.log(e);
+	      						res.end('ok');
 	      					});
       					}
       				});
@@ -159,8 +159,9 @@ module.exports = function(options) {
 	      					content.imgtype=imgtype;
 	      					content.tarih=new Date();
 	      					dbmedia.insert(content,function(e,d){
-	      						console.log(e);
+	      						res.end('ok');
 	      					});
+	      					
       					}
       				});
 	  				break;
@@ -174,13 +175,10 @@ module.exports = function(options) {
     					content.summary=req.body.summary;
     					content.html=req.body.html;
     					content.tarih=new Date();
-    					dbrc.find({name:req.body.name},function(e,d){
-    						console.log(d);
+    					dbrc.update({name:req.body.name},content,{upsert:true},function(e,d){
+    						res.end('ok');
     					});
 
-    					dbrc.update({name:req.body.name},content,{upsert:true},function(e,d){
-    						console.log(e);
-    					});
 	  				break;
 	  				case 'list' : 
 	  					db.find({categories:req.body.cat},function(e,docs){
