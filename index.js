@@ -171,6 +171,7 @@ module.exports = function(options) {
     					content.title1=req.body.title1;
     					content.title2=req.body.title2;
     					content.image=req.body.img;
+    					content.summary=req.body.summary;
     					content.html=req.body.html;
     					content.tarih=new Date();
     					dbrc.find({name:req.body.name},function(e,d){
