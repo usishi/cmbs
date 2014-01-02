@@ -107,7 +107,7 @@ function listmedia(){
 		$('#medianamelist').empty();
 		$('#medianamelist2').empty();
 		retVal.forEach(function(itm){
-			$('#medialist').append('<div class="span6"><a href="javascript:sil(\''+itm._id+'\')"><img src="/adm/media/getthumb/'+itm.img+'"/><br>'+itm.title+'</a></div>');
+			$('#medialist').append('<div class="span5"><a href="javascript:sil(\''+itm._id+'\')"><img src="/adm/media/getthumb/'+itm.img+'"/><br>'+itm.title+'</a></div>');
 			$('#medianamelist').append('<option value="/adm/media/getimg/'+itm.imgtype+'/'+itm.img+'">'+itm.title+'</option>');
 			$('#medianamelist2').append('<option value="'+itm.img+'">'+itm.title+'</option>');
 		});
