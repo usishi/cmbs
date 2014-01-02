@@ -95,6 +95,7 @@ function saverc(){
 				html:$('#txt_metin').val()
 		},function(retVal){
 			$('#haber').modal('hide');
+			alert('Kaydedildi');
 			loadrc();
 		}
 	);
@@ -103,6 +104,8 @@ function saverc(){
 function listmedia(){
 	postData('/adm/ajax',{job:'listmedia'},function(retVal){
 		$('#medialist').html('');
+		$('#medianamelist').empty();
+		$('#medianamelist2').empty();
 		retVal.forEach(function(itm){
 			$('#medialist').append('<div class="span6"><img src="/adm/media/getthumb/'+itm.img+'"/><br>'+itm.title+'</div>');
 			$('#medianamelist').append('<option value="/adm/media/getimg/'+itm.imgtype+'/'+itm.img+'">'+itm.title+'</option>');
