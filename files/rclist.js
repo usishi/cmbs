@@ -60,6 +60,7 @@ function loadrc(){
 		$('#txt_title1').val(retVal.title1);
 		$('#txt_title2').val(retVal.title2);
 		$('#medianamelist2').val(retVal.image);
+		$('#txt_summary').val(retVal.summary);
 		var editorInstance = editor.data('wysihtml5').editor;
     editorInstance.setValue(retVal.html, false);
 	});
@@ -86,10 +87,17 @@ function savemedia(){
 }
 
 function saverc(){
-	postData('/adm/ajax',{job:'saverc',name:getOValue('lst_icerik'),title1:getOValue('txt_title1'),title2:getOValue('txt_title2'),img:getOValue('medianamelist2'),html:$('#txt_metin').val()},function(retVal){
-		$('#haber').modal('hide');
-		loadrc();
-	});
+	postData('/adm/ajax',{job:'saverc',name:getOValue('lst_icerik'),
+				title1:getOValue('txt_title1'),
+				title2:getOValue('txt_title2'),
+				img:getOValue('medianamelist2'),
+				summary:getOValue('txt_summary'),
+				html:$('#txt_metin').val()
+		},function(retVal){
+			$('#haber').modal('hide');
+			loadrc();
+		}
+	);
 }
 
 function listmedia(){
@@ -98,7 +106,7 @@ function listmedia(){
 		retVal.forEach(function(itm){
 			$('#medialist').append('<div class="span6"><img src="/adm/media/getthumb/'+itm.img+'"/><br>'+itm.title+'</div>');
 			$('#medianamelist').append('<option value="/adm/media/getimg/'+itm.imgtype+'/'+itm.img+'">'+itm.title+'</option>');
-			$('#medianamelist2').append('<option value="'+itm._id+'">'+itm.title+'</option>');
+			$('#medianamelist2').append('<option value="'+itm.img+'">'+itm.title+'</option>');
 		});
 	});
 }
