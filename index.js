@@ -166,7 +166,6 @@ module.exports = function(options) {
       				});
 	  				break;
 	  				case 'saverc' : 
-	  					console.log(req.body);
 	  					var content={};
 	  					content.name=req.body.name;
     					content.title1=req.body.title1;
