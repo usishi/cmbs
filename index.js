@@ -236,6 +236,15 @@ module.exports = function(options) {
 	  						});
 	  					});
 	  				break;
+	  				case 'deletemedia' :
+	  					dbmedia.findOne({_id:req.body.id},function(e,doc){
+	  						fs.unlink(options.datafolder+'/richmedia/'+doc.img+'.'+doc.imgtype);
+	  						fs.unlink(options.datafolder+'/richmedia/t_'+doc.img+'.jpg');
+	  						dbmedia.remove({_id:req.body.id},function(e2,n){
+	  							sendReturn(res,'ok');
+	  						});
+	  					});
+	  				break;
 	  			}
 	  		break;
 	  		default :
