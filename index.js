@@ -106,6 +106,7 @@ module.exports = function(options) {
 	      					content.categories=JSON.parse(req.body.turler);
 	      					content.tarih=new Date();
 	      					content.enabled=false;
+	      					content.metin=req.body.metin;
 	      					db.insert(content,function(e,d){
 	      						res.end('ok');
 	      					});
