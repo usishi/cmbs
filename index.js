@@ -138,7 +138,7 @@ module.exports = function(options) {
 	  						qo.editorname='';
 	  					}
 	  					qo.cats=[];
-	  					qo.cats.push(qo.category);
+	  					qo.cats.push(qo.category.replace('.',' '));
 	  					var imgid=uuid.v4();
 	  					var pos=req.body.img.indexOf(';');
 	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
