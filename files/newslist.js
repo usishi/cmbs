@@ -90,9 +90,9 @@ function list(){
 		$('#tbl').html('');
 		retVal.forEach(function(itm){
 			if (itm.enabled){
-				$('#tbl').append('<tr class="success"><td>'+itm.title+'</td><td>'+itm.categories+'</td><td>'+itm.tarih+'</td><td><a href="javascript:news_ed(\''+itm._id+'\')" title="Yayından çıkart" ><i class="icon icon-eye-close"></i></a> <a href="javascript:news_edit(\''+itm._id+'\')" title="İçeriği Düzenle"><i class="icon icon-edit"></i></a></td></tr>');		
+				$('#tbl').append('<tr class="success"><td>'+itm.title+'</td><td>'+itm.categories+'</td><td>'+itm.tarih+'</td><td>'+itm.editor+'</td><td><a href="javascript:news_ed(\''+itm._id+'\')" title="Yayından çıkart" ><i class="icon icon-eye-close"></i></a> <a href="javascript:news_edit(\''+itm._id+'\')" title="İçeriği Düzenle"><i class="icon icon-edit"></i></a></td></tr>');		
 			} else {
-				$('#tbl').append('<tr class="warning"><td>'+itm.title+'</td><td>'+itm.categories+'</td><td>'+itm.tarih+'</td><td><a href="javascript:news_ed(\''+itm._id+'\')" title="Yayına Al" ><i class="icon icon-eye-open"></i></a> <a href="javascript:news_edit(\''+itm._id+'\')" title="İçeriği Düzenle"><i class="icon icon-edit"></i></a><a href="javascript:news_delete(\''+itm._id+'\')"><i class="icon icon-trash"></i></a></td></tr>');	
+				$('#tbl').append('<tr class="warning"><td>'+itm.title+'</td><td>'+itm.categories+'</td><td>'+itm.tarih+'</td><td>'+itm.editor+'</td><td><a href="javascript:news_ed(\''+itm._id+'\')" title="Yayına Al" ><i class="icon icon-eye-open"></i></a> <a href="javascript:news_edit(\''+itm._id+'\')" title="İçeriği Düzenle"><i class="icon icon-edit"></i></a><a href="javascript:news_delete(\''+itm._id+'\')"><i class="icon icon-trash"></i></a></td></tr>');	
 			}
 		})
 		console.log(retVal);
