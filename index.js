@@ -87,31 +87,43 @@ module.exports = function(options) {
 	  			switch(req.body.job){
 	  				case 'save' : 
 	  					var imgid=uuid.v4();
-	  					var pos=req.body.img.indexOf(';');
-	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
-	  					var imgtype=req.body.img.substring(11,pos);
-	  					var fname=options.datafolder+'/content/'+imgid+'.'+imgtype;
-	  					var tname= options.datafolder+'/content/t_'+imgid+'.jpg';
-	  					fs.writeFileSync(fname,buf);
-	  					var crop=JSON.parse(req.body.area);
-	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.thumbsizes.content.w+'x'+options.thumbsizes.content.h,tname],{cwd:options.datafolder+'/content'});
-      				resize.on('exit',function(estat){
-      					console.log(estat);
-      					sendReturn(res,estat);
-      					if (estat==0){
-	      					var content={};
-	      					content.title=req.body.title;
-	      					content.img=imgid;
-	      					content.imgtype=imgtype;
-	      					content.categories=JSON.parse(req.body.turler);
-	      					content.tarih=new Date();
-	      					content.enabled=false;
-	      					content.metin=req.body.metin;
-	      					db.insert(content,function(e,d){
+	  					if (req.body.id==undefined){
+		  					var pos=req.body.img.indexOf(';');
+		  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+		  					var imgtype=req.body.img.substring(11,pos);
+		  					var fname=options.datafolder+'/content/'+imgid+'.'+imgtype;
+		  					var tname= options.datafolder+'/content/t_'+imgid+'.jpg';
+		  					fs.writeFileSync(fname,buf);
+		  					var crop=JSON.parse(req.body.area);
+		  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.thumbsizes.content.w+'x'+options.thumbsizes.content.h,tname],{cwd:options.datafolder+'/content'});
+	      				resize.on('exit',function(estat){
+	      					console.log(estat);
+	      					sendReturn(res,estat);
+	      					if (estat==0){
+		      					var content={};
+		      					content.title=req.body.title;
+		      					content.img=imgid;
+		      					content.imgtype=imgtype;
+		      					content.categories=JSON.parse(req.body.turler);
+		      					content.tarih=new Date();
+		      					content.enabled=false;
+		      					content.metin=req.body.metin;
+		      					db.insert(content,function(e,d){
+		      						res.end('ok');
+		      					});
+	      					}
+	      				});
+	      			} else {
+	      				db.findOne({_id:req.body.id},function(e,doc){
+	  							doc.title=req.body.title;
+	  							doc.categories=JSON.parse(req.body.turler);
+	  							doc.tarih=new Date();
+	  							doc.metin=req.body.metin;
+	      					db.insert(doc,function(e2,d){
 	      						res.end('ok');
 	      					});
-      					}
-      				});
+	  						});
+	      			}
 	  				break;
 	  				case 'savegal' : 
 	  					var imgid=uuid.v4();
