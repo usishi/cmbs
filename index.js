@@ -115,7 +115,6 @@ module.exports = function(options) {
 	      				});
 	      			} else {
 	      				db.findOne({_id:req.body.id},function(e,doc){
-	      					console.log(message);
 	  							doc.title=req.body.title;
 	  							doc.categories=JSON.parse(req.body.turler);
 	  							doc.tarih=new Date();
