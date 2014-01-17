@@ -135,7 +135,7 @@ module.exports = function(options) {
 	  						qo=JSON.parse(uutils._decodetext(req.body.encodedqs));
 	  					} else {
 	  						qo.category='';
-	  						qo.editor='';
+	  						qo.editorname='';
 	  					}
 	  					qo.cats=[];
 	  					qo.cats.push(qo.category);
@@ -159,7 +159,7 @@ module.exports = function(options) {
 	      					content.categories=qo.cats;
 	      					content.tarih=new Date();
 	      					content.enabled=false;
-	      					content.editor=qo.editor;
+	      					content.editor=qo.editorname;
 	      					content.metin=req.body.metin;
 	      					db.insert(content,function(e,d){
 	      						res.end('ok');
