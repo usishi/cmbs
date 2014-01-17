@@ -132,7 +132,7 @@ module.exports = function(options) {
 	  				case 'saveusernews' : 
 	  					var qo={};
 	  					if (req.body.encodedqs!='undefined'){
-	  						qo=JSON.parse(uutils.decodetext(req.body.encodedqs));
+	  						qo=JSON.parse(uutils._decodetext(req.body.encodedqs));
 	  					} else {
 	  						qo.category='';
 	  						qo.editor='';
