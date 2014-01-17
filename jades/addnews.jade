@@ -1,0 +1,47 @@
+extends layout
+block content
+	div.row-fluid#giris
+		div.well.span8
+			div.modal-body
+				div.row-fluid(style="min-height:150px;")
+					div.span5#resimsec
+						label(for='txt_image')
+							strong İçerik Resmi
+						input#txt_image(type='file', title='Dosya Seçiniz')
+						img#loaded(style='max-width: 150px; max-height: 150px;')
+
+						
+					div.span7
+						label(for="txt_title") 
+							strong İçerik Başlığı
+						input.span12#txt_title 
+						
+				div.row-fluid(style="margin-top:10px;")		
+					div.span12
+						label(for="txt_metin") 
+							strong İçerik Metni
+						textarea.span12(style="min-height:200px")#txt_metin
+						
+			div.modal-footer
+				a.btn.btn-success(href="javascript:save()") Gönder	
+		div.well.span4
+			| Sistemimizdeki içeriklerin tümünün, kendilerini anlatan bir resmi olmalıdır. 
+			br
+			br
+			| İçerik resmini yükleyebilmek için aşağıdaki adımlar takip edilmelidir :
+			ul
+				li İçerik Resmi başlığı altındaki "Dosya Seçiniz" düğmesini kullanarak bilgisayarınızdan bir resim seçmelisiniz.
+				li Seçtiğiniz resmin küçük hali karşınıza geldiğinde, bazı bölümlerinin daha parlak olduğunu farkedeceksiniz, bu bölümü üzerine mouse ile basıp kaydırarak, formatlanmış halinin nasıl gözükeceğini ayarlayabilirsiniz.
+			.hide#cat
+				| !{cat}
+	.row-fluid#sonmesaj			
+block scripts
+	script(src='/adm/files/jq.Jcrop.min.js',type="text/javascript")
+	script(src='/adm/files/addnews.js',type="text/javascript")
+	script(type="text/javascript")	
+		$(document).ready(function() {
+			setjapi(!{options.thumbsizes.content.w},!{options.thumbsizes.content.h});
+		});
+		
+block styles
+	link(rel='stylesheet', href='/adm/files/jq.Jcrop.min.css')

@@ -125,6 +125,37 @@ module.exports = function(options) {
 	  						});
 	      			}
 	  				break;
+	  				case 'saveusernews' : 
+	  					var imgid=uuid.v4();
+
+	  					var pos=req.body.img.indexOf(';');
+	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+	  					var imgtype=req.body.img.substring(11,pos);
+	  					var fname=options.datafolder+'/content/'+imgid+'.'+imgtype;
+	  					var tname= options.datafolder+'/content/t_'+imgid+'.jpg';
+	  					fs.writeFileSync(fname,buf);
+	  					var crop=JSON.parse(req.body.area);
+	  					var resize=spawn('convert',[fname,'-crop',crop.w+'x'+crop.h+'+'+crop.x+'+'+crop.y,'-resize',options.thumbsizes.content.w+'x'+options.thumbsizes.content.h,tname],{cwd:options.datafolder+'/content'});
+      				resize.on('exit',function(estat){
+      					console.log(estat);
+      					sendReturn(res,estat);
+      					if (estat==0){
+	      					var content={};
+	      					content.title=req.body.title;
+	      					content.img=imgid;
+	      					content.imgtype=imgtype;
+	      					content.categories=JSON.parse(req.body.turler);
+	      					content.tarih=new Date();
+	      					content.enabled=false;
+	      					content.editor=req.session.user.content.nameSurname+'  '+req.session.user.content.school.name+'('+req.session.user.content.school.city+')';
+	      					content.metin=req.body.metin;
+	      					db.insert(content,function(e,d){
+	      						res.end('ok');
+	      					});
+      					}
+      				});
+	      			
+	  				break;
 	  				case 'savegal' : 
 	  					var imgid=uuid.v4();
 	  					var pos=req.body.img.indexOf(';');
@@ -309,7 +340,13 @@ module.exports = function(options) {
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
-	  		  } else {
+	  		  } else if (req.url.indexOf('/addnews/')>-1){
+	  		  	var cat=req.url.replace('/addnews/','');
+		  			jade.renderFile(__dirname+'/jades/addnews.jade',{options:options,cat:cat.replace('.',' '),pjson:{name:"projeismi"}},function (err, html) {
+		  				res.end(html);	
+						});
+	  		  }
+	  		  else {
 	  		  	console.log(req.url); 
 	  		  	next(); 	
 	  		  } 
