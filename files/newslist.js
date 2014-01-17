@@ -110,7 +110,7 @@ function news_edit(id){
 		console.log(retVal);
 		$('#haber').modal();
 		$('#txt_title').val(retVal.title);
-		$('#txt_metin').val(retVal.body);
+		$('#txt_metin').val(retVal.metin);
 		$('#kategoricontainer input').each(function(i,cb){
 			if (retVal.categories.indexOf(cb.value)>-1){
 				$(cb).attr('checked','');
