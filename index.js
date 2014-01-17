@@ -87,7 +87,7 @@ module.exports = function(options) {
 	  			switch(req.body.job){
 	  				case 'save' : 
 	  					var imgid=uuid.v4();
-	  					if (req.body.id==undefined){
+	  					if (req.body.id==''){
 		  					var pos=req.body.img.indexOf(';');
 		  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
 		  					var imgtype=req.body.img.substring(11,pos);
@@ -115,11 +115,12 @@ module.exports = function(options) {
 	      				});
 	      			} else {
 	      				db.findOne({_id:req.body.id},function(e,doc){
+	      					console.log(message);
 	  							doc.title=req.body.title;
 	  							doc.categories=JSON.parse(req.body.turler);
 	  							doc.tarih=new Date();
 	  							doc.metin=req.body.metin;
-	      					db.insert(doc,function(e2,d){
+	      					db.update(doc,function(e2,d){
 	      						res.end('ok');
 	      					});
 	  						});

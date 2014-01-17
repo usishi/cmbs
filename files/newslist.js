@@ -70,6 +70,7 @@ function opennew(tw,th){
 
 
 function save(){
+	console.log($('#selectedid').html());
 	var cats=[];
 	$('#kategoricontainer input:checked').each(function(i,cb){
 		cats.push(cb.value);
@@ -104,6 +105,7 @@ function news_ed(id){
 
 function news_edit(id){
 	postData('/adm/content',{job:'get',id:id},function(retVal){
+		console.log("seçilenid:"+id);
 		$('#selectedid').html(id);
 		console.log(retVal);
 		$('#haber').modal();
