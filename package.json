@@ -11,6 +11,7 @@
         "express": "3.4.7",  
         "jade": "0.27.7",
         "mime" : "1.2.11",
+        "uwebtools"                 : "git+https://github.com/usishi/uwebtools.git",
         "node-uuid": "1.4.1",
         "nedb":"0.9.3"
     }

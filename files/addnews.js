@@ -56,10 +56,8 @@ function setjapi(twidth,theight){
 
 
 function save(){
-	var cats=[];
-  cats.push($('#cat').html());
 	if ((getOValue('txt_title').trim()!='') && (getOValue('txt_metin').trim()!='') && (cats.length>0)) {
-		postData('/adm/ajax',{job:'saveusernews',title:getOValue('txt_title'),metin:getOValue('txt_metin'),img:$('#loaded').attr('src'),area:JSON.stringify(sa),turler:JSON.stringify(cats)},function(retVal){
+		postData('/adm/ajax',{job:'saveusernews',title:getOValue('txt_title'),metin:getOValue('txt_metin'),img:$('#loaded').attr('src'),area:JSON.stringify(sa),encodedqs=$('#encodedqs').html()},function(retVal){
 			$('#giris').addClass('hide');
 			$('#sonmesaj').html('İçerik kaydedilmiştir.');
 		});

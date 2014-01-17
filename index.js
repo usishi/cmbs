@@ -3,8 +3,12 @@ var jade = require('jade'),
 	uuid = require('node-uuid'),
 	spawn = require('child_process').spawn,
 	fs = require('fs'),
+	uwebtools     = require('uwebtools'),
 	Datastore = require('nedb');
   
+
+var uutils = global.uutils = uwebtools.uutils.createObject();
+
 var isObject = function(a) {
     return (!!a) && (a.constructor === Object);
   }  
@@ -126,8 +130,16 @@ module.exports = function(options) {
 	      			}
 	  				break;
 	  				case 'saveusernews' : 
+	  					var qo={};
+	  					if (req.body.encodedqs!='undefined'){
+	  						qo=JSON.parse(uutils.decodetext(req.body.encodedqs));
+	  					} else {
+	  						qo.category='';
+	  						qo.editor='';
+	  					}
+	  					qo.cats=[];
+	  					qo.cats.push(qo.category);
 	  					var imgid=uuid.v4();
-
 	  					var pos=req.body.img.indexOf(';');
 	  					var buf = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
 	  					var imgtype=req.body.img.substring(11,pos);
@@ -144,10 +156,10 @@ module.exports = function(options) {
 	      					content.title=req.body.title;
 	      					content.img=imgid;
 	      					content.imgtype=imgtype;
-	      					content.categories=JSON.parse(req.body.turler);
+	      					content.categories=qo.cats;
 	      					content.tarih=new Date();
 	      					content.enabled=false;
-	      					content.editor=req.session.user.content.nameSurname+'  '+req.session.user.content.school.name+'('+req.session.user.content.school.city+')';
+	      					content.editor=qo.editor;
 	      					content.metin=req.body.metin;
 	      					db.insert(content,function(e,d){
 	      						res.end('ok');
@@ -340,9 +352,9 @@ module.exports = function(options) {
                 res.contentLength = stat.size;
                 res.end(img, 'binary');
             });
-	  		  } else if (req.url.indexOf('/addnews/')>-1){
-	  		  	var cat=req.url.replace('/addnews/','');
-		  			jade.renderFile(__dirname+'/jades/addnews.jade',{options:options,cat:cat.replace('.',' '),pjson:{name:"projeismi"}},function (err, html) {
+	  		  } else if (req.url.indexOf('/addnews')>-1){
+	  		  	var qs=req.url.replace('/addnews?qs=','');
+		  			jade.renderFile(__dirname+'/jades/addnews.jade',{options:options,encoded_qs:qs,pjson:{name:"projeismi"}},function (err, html) {
 		  				res.end(html);	
 						});
 	  		  }
