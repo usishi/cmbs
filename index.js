@@ -119,7 +119,7 @@ module.exports = function(options) {
 	  							doc.categories=JSON.parse(req.body.turler);
 	  							doc.tarih=new Date();
 	  							doc.metin=req.body.metin;
-	      					db.update(doc,function(e2,d){
+	      					db.update({_id=doc._id},doc,{upsert:true},function(e2,d){
 	      						res.end('ok');
 	      					});
 	  						});
