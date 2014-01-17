@@ -63,6 +63,7 @@ function opennew(tw,th){
 	$('#txt_title').val('');
 	$('#txt_metin').val('');
 	$('#resimsec').html('');
+	$('#selectedid').html('');
 	$('#resimsec').append('<label for="txt_image"> <strong>İçerik Resmi</strong></label><input type="file" title="Dosya Seçiniz" id="txt_image"><img id="loaded" style="max-width:150px;max-height:150px">');
 	setjapi(tw,th);
 }
@@ -74,7 +75,7 @@ function save(){
 		cats.push(cb.value);
 	})
 	if ((getOValue('txt_title').trim()!='') && (getOValue('txt_metin').trim()!='') && (cats.length>0)) {
-		postData('/adm/ajax',{job:'save',title:getOValue('txt_title'),metin:getOValue('txt_metin'),img:$('#loaded').attr('src'),area:JSON.stringify(sa),turler:JSON.stringify(cats)},function(retVal){
+		postData('/adm/ajax',{id:$('#selectedid').html(),job:'save',title:getOValue('txt_title'),metin:getOValue('txt_metin'),img:$('#loaded').attr('src'),area:JSON.stringify(sa),turler:JSON.stringify(cats)},function(retVal){
 			$('#haber').modal('hide');
 			list();
 		});
@@ -103,6 +104,7 @@ function news_ed(id){
 
 function news_edit(id){
 	postData('/adm/content',{job:'get',id:id},function(retVal){
+		$('#selectedid').html(id);
 		console.log(retVal);
 		$('#haber').modal();
 		$('#txt_title').val(retVal.title);
