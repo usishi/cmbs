@@ -241,9 +241,15 @@ module.exports = function(options) {
 	  					})
 	  				break;
 	  				case 'listgal' : 
-	  					dbgal.find({categories:req.body.cat},function(e,docs){
-	  						sendReturn(res,docs);
-	  					})
+	  					if ((req.body.cat==undefined) || (req.body.cat.length<1)){
+	  						dbgal.find({},function(e,docs){
+	  							sendReturn(res,docs);
+	  						});
+	  					} else {
+	  						dbgal.find({categories:req.body.cat},function(e,docs){
+	  							sendReturn(res,docs);
+	  						});	
+	  					}
 	  				break;
 	  				case 'listmedia' : 
 	  					dbmedia.find({},function(e,docs){
