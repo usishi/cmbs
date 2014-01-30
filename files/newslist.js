@@ -100,7 +100,10 @@ function list(){
 }
 
 function news_ed(id){
-
+	postData('/adm/ajax',{job:'yayin_al_cikart',id:id},function(retVal){
+		if(retVal)
+			list();
+	});
 }
 
 function news_edit(id){

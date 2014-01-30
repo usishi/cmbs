@@ -261,6 +261,19 @@ module.exports = function(options) {
 	  						sendReturn(res,doc);
 	  					});
 	  				break;
+	  				case 'yayin_al_cikart':
+	  					console.log(req.body.id);
+	  					db.findOne({_id:req.body.id},function(e,doc){
+	  						if(doc.enabled==false)
+	  							db.update({_id:req.body.id},{$set:{"enabled":true}},function(err,sonuc){
+	  								sendReturn(res,"ok");
+								});
+	  						else
+	  							db.update({_id:req.body.id},{$set:{"enabled":false}},function(err,sonuc){
+	  								sendReturn(res,"ok");
+								});
+	  					});
+	  				break;
 	  			}
 	  		break;
 	  		case '/content' : 
