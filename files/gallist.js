@@ -100,7 +100,8 @@ function news_edit(id){
 		console.log(retVal);
 		$('#haber').modal();
 		$('#txt_title').val(retVal.title);
-		$('#resimsec').html('<img src="/adm/gallery/getimage/'+retVal.imgtype+'/'+retVal.img+'">');
+		$('#resimsec').html('<img src="/adm/gallery/getthumb/'+retVal.img+'">');
+		//$('#resimsec').html('<img src="/adm/gallery/getimage/'+retVal.imgtype+'/'+retVal.img+'">');
 	});
 }
 
